@@ -1,9 +1,8 @@
-import './App.css';
 import Search from './components/Search';
 
 function App() {
   return (
-    <div className="App">
+    <div className="container mt-5">
       <Search />
     </div>
   );

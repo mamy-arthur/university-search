@@ -1,15 +1,18 @@
 import { UniversityInterface } from "../interfaces/university.interface";
-import UniversityWebsites from "./UniversityWebsites";
+import University from "./University";
 
-function Universities ({universities}: any) {
-    return <ul>{
+type UniversitiesProps = {
+    universities: UniversityInterface[];
+}
+
+function Universities ({universities}: UniversitiesProps) {
+    return <div className="row">{
         universities.map((university: UniversityInterface, index: number) => {
-            return <li key={index}>
-                {university.name} {university.country}
-                {<UniversityWebsites websites={university.web_pages}/>}
-            </li>
+            return <div className="col-md-4 mt-3" key={index}>
+                <University university={university}/>
+            </div>
         })
-    }</ul>
+    }</div>
 }
 
 export default Universities;

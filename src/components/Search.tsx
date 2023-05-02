@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { UniversityInterface } from "../interfaces/university.interface";
 import { apiFetch } from "../utils/apiFetch";
-import Loading from "./Loding";
+import Loading from "./Loading";
 import Universities from "./Universities";
 import UniversityCounts from "./UniversityCounts";
 
@@ -12,7 +12,7 @@ function Search () {
     const [loading, setLoading] = useState<boolean>(false);
 
     const handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
-        setInputSearch(e.currentTarget.value);
+        setInputSearch(e.currentTarget.value.trim());
     }
 
     //effect
@@ -33,11 +33,22 @@ function Search () {
 
     //render
     return <div>
-        {loading && <Loading />}
         <div>
-            <input type="text" value={inputSearch} onChange={(e) => handleInputChange(e)}/>
+            <div className="input-group mb-3">
+                <span className="input-group-text" id="inputGroup-sizing-default">Rechercher</span>
+                <input
+                    type="text"
+                    className="form-control"
+                    aria-label="Sizing example input"
+                    aria-describedby="inputGroup-sizing-default"
+                    value={inputSearch}
+                    onChange={(e) => handleInputChange(e)}
+                />
+            </div>
             <h2>{<UniversityCounts counts={universities.length}/>}</h2>
-            <div>
+            <div className="row position-relative">
+                { loading &&
+                    <Loading />}
                 {<Universities universities={universities}/>}
             </div>
         </div>
