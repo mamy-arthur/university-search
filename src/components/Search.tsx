@@ -18,26 +18,41 @@ function Search () {
     //effect
     useEffect(() => {
         setLoading(true);
-        let getData = setTimeout(async () => {
-            if (inputSearch.length) {
-                let data =  await apiFetch(`/search?name=${inputSearch}`);
+        const controller = new AbortController();
+        const {signal} = controller;
+        let searchText = inputSearch.trim()
+        if (searchText) {
+            (async () => {
+                let data = await apiFetch(`/search?name=${searchText}`, {signal});
                 setUniversities(data);
                 setLoading(false);
-            } else if (inputSearch.length === 0) {
-                setUniversities([]);
-                setLoading(false);
-            }
-        }, 750)
-        return () => clearTimeout(getData)
+            })();
+        } else {
+            setUniversities([]);
+            setLoading(false);
+        }
+        return () => controller.abort();
     }, [inputSearch]);
 
     //render
     return <div>
         {loading && <Loading />}
         <div>
-            <input type="text" value={inputSearch} onChange={(e) => handleInputChange(e)}/>
-            <h2>{<UniversityCounts counts={universities.length}/>}</h2>
-            <div>
+            <div className="input-group mb-3">
+                <span className="input-group-text" id="inputGroup-sizing-default">Rechercher</span>
+                <input
+                    type="text"
+                    className="form-control"
+                    aria-label="Sizing example input"
+                    aria-describedby="inputGroup-sizing-default"
+                    value={inputSearch}
+                    onChange={(e) => handleInputChange(e)}
+                />
+            </div>
+            <h2>{<UniversityCounts counts={universities.length} input={inputSearch}/>}</h2>
+            <div className="row position-relative">
+                { loading &&
+                    <Loading />}
                 {<Universities universities={universities}/>}
             </div>
         </div>
