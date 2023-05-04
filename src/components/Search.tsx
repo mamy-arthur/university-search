@@ -18,17 +18,20 @@ function Search () {
     //effect
     useEffect(() => {
         setLoading(true);
-        let getData = setTimeout(async () => {
-            if (inputSearch.length) {
-                let data =  await apiFetch(`/search?name=${inputSearch}`);
+        const controller = new AbortController();
+        const {signal} = controller;
+        let searchText = inputSearch.trim()
+        if (searchText) {
+            (async () => {
+                let data = await apiFetch(`/search?name=${searchText}`, {signal});
                 setUniversities(data);
                 setLoading(false);
-            } else if (inputSearch.length === 0) {
-                setUniversities([]);
-                setLoading(false);
-            }
-        }, 750)
-        return () => clearTimeout(getData)
+            })();
+        } else {
+            setUniversities([]);
+            setLoading(false);
+        }
+        return () => controller.abort();
     }, [inputSearch]);
 
     //render
@@ -45,7 +48,7 @@ function Search () {
                     onChange={(e) => handleInputChange(e)}
                 />
             </div>
-            <h2>{<UniversityCounts counts={universities.length}/>}</h2>
+            <h2>{<UniversityCounts counts={universities.length} input={inputSearch}/>}</h2>
             <div className="row position-relative">
                 { loading &&
                     <Loading />}
