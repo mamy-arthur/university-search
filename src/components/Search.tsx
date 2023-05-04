@@ -12,7 +12,7 @@ function Search () {
     const [loading, setLoading] = useState<boolean>(false);
 
     const handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
-        setInputSearch(e.currentTarget.value.trim());
+        setInputSearch(e.currentTarget.value);
     }
 
     //effect
@@ -20,7 +20,7 @@ function Search () {
         setLoading(true);
         const controller = new AbortController();
         const {signal} = controller;
-        let searchText = inputSearch.trim()
+        let searchText = inputSearch.trim();
         if (searchText) {
             (async () => {
                 let data = await apiFetch(`/search?name=${searchText}`, {signal});
@@ -37,18 +37,26 @@ function Search () {
     //render
     return <div>
         <div>
-            <div className="input-group mb-3">
-                <span className="input-group-text" id="inputGroup-sizing-default">Rechercher</span>
-                <input
-                    type="text"
-                    className="form-control"
-                    aria-label="Sizing example input"
-                    aria-describedby="inputGroup-sizing-default"
-                    value={inputSearch}
-                    onChange={(e) => handleInputChange(e)}
-                />
+            <div className="row">
+                <div className="col-md-5 offset-md-3">
+                    <div className="input-group mb-3">
+                        <span className="input-group-text" id="inputGroup-sizing-default">Rechercher</span>
+                        <input
+                            type="text"
+                            className="form-control"
+                            aria-label="Sizing example input"
+                            aria-describedby="inputGroup-sizing-default"
+                            value={inputSearch}
+                            onChange={(e) => handleInputChange(e)}
+                        />
+                    </div>
+                </div>
             </div>
-            <h2>{<UniversityCounts counts={universities.length} input={inputSearch}/>}</h2>
+            <div className="row">
+                <div className="col-md-6 offset-md-3">
+                <h2>{<UniversityCounts counts={universities.length} input={inputSearch}/>}</h2>
+                </div>
+            </div>
             <div className="row position-relative">
                 { loading &&
                     <Loading />}
