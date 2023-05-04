@@ -5,7 +5,7 @@ type UniversityProps = {
     university: UniversityInterface;
 }
 function University ({university}: UniversityProps) {
-    return (<div className="card">
+    return (<div className="card" data-testid="university">
         <div className="card-header">
             {university.name}
         </div>
