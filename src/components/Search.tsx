@@ -35,7 +35,7 @@ function Search () {
     }, [inputSearch]);
 
     //render
-    return <div>
+    return <div data-testid="search">
         <div>
             <div className="row">
                 <div className="col-md-5 offset-md-3">
@@ -48,6 +48,7 @@ function Search () {
                             aria-describedby="inputGroup-sizing-default"
                             value={inputSearch}
                             onChange={(e) => handleInputChange(e)}
+                            placeholder="Rechercher..."
                         />
                     </div>
                 </div>

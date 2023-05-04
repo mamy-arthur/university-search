@@ -6,11 +6,13 @@ type UniversitiesProps = {
 }
 
 function Universities ({universities}: UniversitiesProps) {
-    return <div className="row">{
+    return <div className="row" data-testid="universities">{
         universities.map((university: UniversityInterface, index: number) => {
-            return <div className="col-xl-3 col-lg-4 col-md-6 col-xs-12 mt-3" key={index}>
-                <University university={university}/>
-            </div>
+            return (
+                <div className="col-xl-3 col-lg-4 col-md-6 col-xs-12 mt-3" key={index} data-testid={`university-${index}`}>
+                    <University university={university}/>
+                </div>
+            );
         })
     }</div>
 }
